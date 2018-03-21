@@ -1,0 +1,12 @@
+:verbose: false
+:concurrency: 5
+:timeout: 8
+:queues:
+  - default
+  - mailers
+
+# you can override concurrency based on environment
+test:
+  :average_scheduled_poll_interval: 1
+  :poll_interval_average: 1
+  :concurrency: 1
