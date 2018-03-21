@@ -1,24 +1,48 @@
-# README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# Dockerizing Rails 5, Postgres, Redis, Sidekiq, ActionCable
+## How to use
 
-Things you may want to cover:
+* clone this repository
+* `cp .env.example .env` and change into yours:
 
-* Ruby version
+```
+DB_USER=root
+DB_PASSWORD=itsahardpassword!
+REDIS_URL=redis://redis:6379/0
+REDIS_PASSWORD=itsahardpassword!
+```
+* docker-compose up --build
+* go to `http://localhost:3000`
+### Postgres
 
-* System dependencies
+Document not created. You can see at `docker-compose.yml` to start understanding.
 
-* Configuration
+### Redis
 
-* Database creation
+Document not created. You can see at `docker-compose.yml` to start understanding.
+### Sidekiq
 
-* Database initialization
+```ruby
+redis = { 
+  url: (ENV['REDIS_URL'] || 'redis://127.0.0.1:6379/0'),
+  password: (ENV['REDIS_PASSWORD'] || '')
+}
 
-* How to run the test suite
+Sidekiq.configure_server do |config|
+  config.redis = redis
+end
 
-* Services (job queues, cache servers, search engines, etc.)
+Sidekiq.configure_client do |config|
+  config.redis = redis
+end
+```
+#### Sidekiq dashboard
+After `docker-compose up` you can go to `http://localhost:3000/sidekiq`
+To change url into yours, go to `routes.rb` and change the path:
+```ruby
+mount Sidekiq::Web => '/sidekiq'
+```
 
-* Deployment instructions
+### ActionCable
 
-* ...
+Document not created. You can see at `docker-compose.yml` to start understanding.
